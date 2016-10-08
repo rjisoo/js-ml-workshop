@@ -14,9 +14,9 @@ var randomPoints = require('../lib/rand');
   the second and third parameter are of length two.
 
   The values in each vector would be between [2,2] and [3,3]--that is,
-      the n-th value in each vector is chosen by multiplying the n-th
-      value in the first parameter with a random number from 0 to 1, 
-      and then adding the n-th value of the third parameter.
+	  the n-th value in each vector is chosen by multiplying the n-th
+	  value in the first parameter with a random number from 0 to 1, 
+	  and then adding the n-th value of the third parameter.
 
    A more natural way to say this is that randomPoints gives you an array of
    points (of the length of the first argument) filling a hypercube (with
@@ -55,11 +55,11 @@ describe('Testing the basic KNN functionality.', function(){
 		   Train takes an array of training data and stores it.
 
 		   Each training element, in an array of training data, is an array of length two.
-		      The first element of the subarray is a vector -- an array of numbers, of arbitrary length.
-		      The second element of the subarray is a classification -- a number.
+			  The first element of the subarray is a vector -- an array of numbers, of arbitrary length.
+			  The second element of the subarray is a classification -- a number.
 
-		      This is the standard way that training data is represented throughout
-		      this file.
+			  This is the standard way that training data is represented throughout
+			  this file.
 
 		   Example Training Data: [ [ [1,2,3],0 ] , [ [1,2,4],0 ] , [ [-1,2,3],1 ] , ... ]
 		*/
@@ -68,7 +68,9 @@ describe('Testing the basic KNN functionality.', function(){
 			//Making fake data
 			var typeA = randomPoints(100,[1,1],[0,0]).map(function(n){ return [n,1] });
 			var typeB = randomPoints(100,[1,1],[1,0]).map(function(n){ return [n,0] });
+			//console.log(typeA[0]);
 			knn.train(typeA);
+			//console.log(typeA[0]);
 			expect(knn.points.length).to.equal(100);
 			expect(knn.points[0][0]).to.equal(typeA[0][0])
 			knn.train(typeB);
@@ -86,7 +88,7 @@ describe('Testing the basic KNN functionality.', function(){
 		  However, if you implement these functions, it will be much easier to write predictSingle,
 		  and they do provide a useful way to break down the things that predictSingle will need to do.
 		*/
-		xdescribe('Optional helper functions to be used in predict and predictSingle', function(){ 
+		describe('Optional helper functions to be used in predict and predictSingle', function(){ 
 
 			/* The purpose of the function '_distance' is to find the Euclidean norm
 			   as between two vectors.
@@ -119,14 +121,14 @@ describe('Testing the basic KNN functionality.', function(){
 			   See the comment on "train" to see what this will look like. 
 
 			   As output, it should give an array of sub-arrays which have length two.
-			   	  The first element of each n-th sub-array should be
-			   	  the distance between the first vector handed in, and the n-th
-			   	  element of the training data.
+				  The first element of each n-th sub-array should be
+				  the distance between the first vector handed in, and the n-th
+				  element of the training data.
 
-			   	  And the second element should be the classification
-			   	  of the n-th element of the input array.
+				  And the second element should be the classification
+				  of the n-th element of the input array.
 
-			   	Example Output: [ [.1,0] , [.2,0] , [.3, 1] , [.4,0] ... ]
+				Example Output: [ [.1,0] , [.2,0] , [.3, 1] , [.4,0] ... ]
 			   */
 			it('has function _distances, which works as expected', function(){
 				var knn = new KNN(10);
@@ -135,16 +137,19 @@ describe('Testing the basic KNN functionality.', function(){
 				var typeA = randomPoints(100,[1,1],[0,0]).map(function(n){ return [n,1] });
 				var typeB = randomPoints(100,[1,1],[1,0]).map(function(n){ return [n,0] });
 				var distances = knn._distances([0,0], [[[1,0],1]].concat(typeA.concat(typeB)));
+
 				expect(distances.length).to.equal(201);
 				expect(distances[0].length).to.equal(2);
+
 				expect(distances[0][0]).to.equal(1);
+				expect(distances[0][1]).to.equal(1);
 			});
 
 			/*The basic purpose of _sorted is to take the output of _distances and sort it by distance.
 
 			  The input should be an array of sub-arrays of length two.
-			    The first element is a distance.
-			    The second input is the classification corresponding to that distance.
+				The first element is a distance.
+				The second input is the classification corresponding to that distance.
 
 			  The output of the second is an array of classifications,
 			  ordered by the distances that (used to) accompany each classification.
@@ -165,9 +170,9 @@ describe('Testing the basic KNN functionality.', function(){
 			  among the first k elements of an sorted list of distances and classifications.
 
 			  It takes as input two parameters. 
-			     The first is k.
-			     The second is the output of _sorted--a sorted list of classifications,
-			     going from closest to furthest.
+				 The first is k.
+				 The second is the output of _sorted--a sorted list of classifications,
+				 going from closest to furthest.
 			
 			  It gives as output the most common classification among the
 			  elements from index 0 to index k in the array passed in.
@@ -204,7 +209,7 @@ describe('Testing the basic KNN functionality.', function(){
 		});
 
 		/*  This is just like predictSingle, except it applies it across 
-		    an array of vectors.
+			an array of vectors.
 		 */
 		it('has a predict function, which takes an array of vectors', function(){
 			var knn = new KNN(10);
@@ -242,6 +247,7 @@ describe('Testing the basic KNN functionality.', function(){
 			knn.train(typeA);
 			knn.train(typeB);
 			var typeB = randomPoints(100,[1,1],[.95,0]).map(function(n){ return [n,1] });
+			console.log(knn.score(typeB))
 			expect(knn.score(typeB) > 0.6).to.equal(true);
 			expect(knn.score(typeB) <= 1).to.equal(true);
 		});
@@ -251,12 +257,12 @@ describe('Testing the basic KNN functionality.', function(){
 
 
 /*Switch this to a describe after you've completed the above.*/
-xdescribe('Testing the KNN with data from the MNIST', function(){
+describe('Testing the KNN with data from the MNIST', function(){
 
 	//Need more time, to handle all the data.
 	this.timeout(10000);
 
-	xit('Can handle somewhat chaotic data', function(){
+	it('Can handle somewhat chaotic data', function(){
 		var knn = new KNN(1);
 		var typeA = randomPoints(1000,[1,1],[0,0]).map(function(n){ return [n,0] });
 		var typeB = randomPoints(1000,[1,1],[.75,0]).map(function(n){ return [n,1] });
@@ -268,25 +274,25 @@ xdescribe('Testing the KNN with data from the MNIST', function(){
 	});
 
    /* The data given to the algorithm here is the mnist data.
-      This means the algorithm is trying to classify into 10 different
-      classes, rather than 2, as in the above.  The input vectors are 724 elements 
-      long as well, rather than 2, as in the above.  So this is a significantly
-      more complex problem, with more chaotic data.
+	  This means the algorithm is trying to classify into 10 different
+	  classes, rather than 2, as in the above.  The input vectors are 724 elements 
+	  long as well, rather than 2, as in the above.  So this is a significantly
+	  more complex problem, with more chaotic data.
 
-      Note that initially, while working from only 100 elements of training
-      data, the algorithm is only able to get a fairly low score--although
-      still far better than random chance.
+	  Note that initially, while working from only 100 elements of training
+	  data, the algorithm is only able to get a fairly low score--although
+	  still far better than random chance.
 
-      Try to improve that score.  Does fiddling with the k-number alter it 
-      very much?  Or does adding more training data alter it more?
+	  Try to improve that score.  Does fiddling with the k-number alter it 
+	  very much?  Or does adding more training data alter it more?
 
 	  Running this will create .gif images, each showing how your program classified a particular image.
 	  What kind of mistakes does the program make?
 	  Are any of them mistakes you might make, in reading a digit?
 	  How could you improve accuracy of the program?
 	  
-    */
-	xit('Can be trained off the mnist data', function(done){
+	*/
+	it('Can be trained off the mnist data', function(done){
 		var allElements = mnist.allElements();			//Should load up all 5000 elements
 		var knn = new KNN(2);
 		var trainingSet = allElements.slice(0,600); 	//Make the training set 
